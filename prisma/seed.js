@@ -101,3 +101,39 @@ main()
     await prisma.$disconnect();
     process.exit(1);
   });
+
+
+
+  //NOTA
+  //debes correr estos triggers directamente en el esquema 
+
+  //USUARIO Y COMPRA
+
+
+  /* 
+  DELIMITER //
+CREATE TRIGGER before_usuario_insert
+BEFORE INSERT ON Usuario
+FOR EACH ROW
+BEGIN
+  IF (SELECT COUNT(*) FROM Roles WHERE idRol = NEW.idRol) = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'idRol no válido';
+  END IF;
+END;
+//
+DELIMITER ;
+  */
+
+
+
+/*
+DELIMITER $$
+CREATE TRIGGER `before_compra_insert` BEFORE INSERT ON `compra` FOR EACH ROW BEGIN
+  IF (SELECT COUNT(*) FROM Usuario WHERE idUsuario = NEW.idUsuario) = 0 THEN
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'idUsuario no válido';
+  END IF;
+END
+$$
+DELIMITER ;
+
+*/
