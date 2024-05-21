@@ -1,46 +1,36 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from "@prisma/client";
+import checkInDbMessage from "../utils/checkInTheDb.js";
+import { categoriaData, rolesData } from "../utils/const/datasample_db.js";
 
 const prisma = new PrismaClient();
-
-const rolesData = [
-  { nombreRol: 'cliente', descripcionRol: 'Cliente del sistema' },
-  { nombreRol: 'administrador', descripcionRol: 'Administrador del sistema' }
-];
-
-const categoriaData = [
-  { nombreCategoria: 'zona gamer' },
-  { nombreCategoria: 'zona computo' },
-  { nombreCategoria: 'zona redes' },
-  { nombreCategoria: 'zona electronica' }
-];
-
-
 
 async function main() {
   console.log(`Start seeding ...`);
 
   try {
-    // Insertar roles en la tabla Roles
-    await prisma.Roles.createMany({
-      data: rolesData,
-    });
-    console.log(`Inserted roles data.`);
+    // Check if we have roles data in the roles table
+    const rolesCount = await prisma.roles.count();
 
-    // Insertar categorías en la tabla Categoria
-    await prisma.Categoria.createMany({
-      data: categoriaData,
-    });
-    console.log(`Inserted categoria data.`);
+    await checkInDbMessage(
+      "roles",
+      rolesCount,
+      prisma.roles.createMany({
+        data: rolesData,
+      })
+    );
 
-    // Insertar usuarios y sus posts
-    for (const u of userData) {
-      const user = await prisma.Usuario.create({
-        data: u,
-      });
-      console.log(`Created user with id: ${user.id}`);
-    }
+    // Check if we have categories data in the categories table
+    const categoriesCount = await prisma.categoria.count();
 
-    console.log(`Seeding finished.`);
+    await checkInDbMessage(
+      "categories",
+      categoriesCount,
+      prisma.categoria.createMany({
+        data: categoriaData,
+      })
+    );
+
+    console.log('Seeding completed ...');
   } catch (error) {
     console.error("Error seeding data: ", error);
   }
@@ -56,15 +46,12 @@ main()
     process.exit(1);
   });
 
+//NOTA
+//debes correr estos triggers directamente en el esquema
 
+//USUARIO Y COMPRA
 
-  //NOTA
-  //debes correr estos triggers directamente en el esquema 
-
-  //USUARIO Y COMPRA
-
-
-  /* 
+/* 
   DELIMITER //
 CREATE TRIGGER before_usuario_insert
 BEFORE INSERT ON Usuario
@@ -77,8 +64,6 @@ END;
 //
 DELIMITER ;
   */
-
-
 
 /*
 DELIMITER $$

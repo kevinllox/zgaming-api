@@ -2,6 +2,7 @@
   "name": "rest-express",
   "version": "1.0.0",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "node src/index.js",
     "seed": "node seed.js"
