@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "node src/index.js"
+    "dev": "node src/index.js",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "@prisma/client": "5.14.0",
