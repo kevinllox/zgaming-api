@@ -1,41 +1,17 @@
--- DropIndex
-DROP INDEX `Compra_idUsuario_fkey` ON `compra`;
+-- Eliminar claves foráneas
+ALTER TABLE `Compra` DROP FOREIGN KEY `Compra_idUsuario_fkey`;
+ALTER TABLE `detalleCompra` DROP FOREIGN KEY `detalleCompra_idCompra_fkey`;
+ALTER TABLE `detalleCompra` DROP FOREIGN KEY `detalleCompra_idProducto_fkey`;
+ALTER TABLE `Producto` DROP FOREIGN KEY `Producto_idCategoria_fkey`;
+ALTER TABLE `RolesOpcionMenu` DROP FOREIGN KEY `RolesOpcionMenu_idOpcion_fkey`;
+ALTER TABLE `RolesOpcionMenu` DROP FOREIGN KEY `RolesOpcionMenu_idRol_fkey`;
+ALTER TABLE `Usuario` DROP FOREIGN KEY `Usuario_idRol_fkey`;
 
--- DropIndex
-DROP INDEX `detalleCompra_idCompra_fkey` ON `detallecompra`;
-
--- DropIndex
-DROP INDEX `detalleCompra_idProducto_fkey` ON `detallecompra`;
-
--- DropIndex
-DROP INDEX `Producto_idCategoria_fkey` ON `producto`;
-
--- DropIndex
-DROP INDEX `RolesOpcionMenu_idOpcion_fkey` ON `rolesopcionmenu`;
-
--- DropIndex
-DROP INDEX `RolesOpcionMenu_idRol_fkey` ON `rolesopcionmenu`;
-
--- DropIndex
-DROP INDEX `Usuario_idRol_fkey` ON `usuario`;
-
--- AddForeignKey
-ALTER TABLE `Usuario` ADD CONSTRAINT `Usuario_idRol_fkey` FOREIGN KEY (`idRol`) REFERENCES `Roles`(`idRol`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `RolesOpcionMenu` ADD CONSTRAINT `RolesOpcionMenu_idOpcion_fkey` FOREIGN KEY (`idOpcion`) REFERENCES `OpcionesMenu`(`idOpcion`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `RolesOpcionMenu` ADD CONSTRAINT `RolesOpcionMenu_idRol_fkey` FOREIGN KEY (`idRol`) REFERENCES `Roles`(`idRol`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Producto` ADD CONSTRAINT `Producto_idCategoria_fkey` FOREIGN KEY (`idCategoria`) REFERENCES `Categoria`(`idCategoria`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Compra` ADD CONSTRAINT `Compra_idUsuario_fkey` FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`idUsuario`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `detalleCompra` ADD CONSTRAINT `detalleCompra_idProducto_fkey` FOREIGN KEY (`idProducto`) REFERENCES `Producto`(`idProducto`) ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `detalleCompra` ADD CONSTRAINT `detalleCompra_idCompra_fkey` FOREIGN KEY (`idCompra`) REFERENCES `Compra`(`idCompra`) ON DELETE SET NULL ON UPDATE CASCADE;
+-- Eiminar los índices
+DROP INDEX `Compra_idUsuario_fkey` ON `Compra`;
+DROP INDEX `detalleCompra_idCompra_fkey` ON `detalleCompra`;
+DROP INDEX `detalleCompra_idProducto_fkey` ON `detalleCompra`;
+DROP INDEX `Producto_idCategoria_fkey` ON `Producto`;
+DROP INDEX `RolesOpcionMenu_idOpcion_fkey` ON `RolesOpcionMenu`;
+DROP INDEX `RolesOpcionMenu_idRol_fkey` ON `RolesOpcionMenu`;
+DROP INDEX `Usuario_idRol_fkey` ON `Usuario`;

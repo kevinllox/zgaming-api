@@ -11,7 +11,6 @@ model Roles {
   idRol         Int               @id @default(autoincrement())
   nombreRol     String            @db.VarChar(15)
   descripcionRol String            @db.VarChar(50)
-  Usuario       Usuario[]
   RolesOpcionMenu RolesOpcionMenu[]
 }
 
@@ -36,8 +35,6 @@ model Usuario {
   nombreUsuario    String    @db.VarChar(20)
   activo           Boolean?
   idRol            Int
-  Roles            Roles     @relation(fields: [idRol], references: [idRol])
-  Compra           Compra[]
 }
 
 model RolesOpcionMenu {
@@ -65,7 +62,6 @@ model Compra {
   idCompra         Int               @id @default(autoincrement())
   cantidadCompra   Int?
   idUsuario        Int
-  Usuario          Usuario           @relation(fields: [idUsuario], references: [idUsuario])
   detalleCompra    detalleCompra[]
 }
 
