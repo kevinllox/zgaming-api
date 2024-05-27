@@ -51,3 +51,4 @@ You can access the REST API of the server using the following endpoints:
 
 ### `DELETE`
 
+###
