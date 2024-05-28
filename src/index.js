@@ -1,12 +1,33 @@
 
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
+import cors from 'cors'
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import authRoutes from './router/auth.router.js'
+import categoriesRoutes from './router/categories.router.js'
+import productsRoutes from './router/products.router.js'
+import purchaseDetailsRoutes from './router/purchaseDetails.router.js'
 
 
-const prisma = new PrismaClient()
 const app = express()
+app.use(cors({origin: "http://localhost:3000", credentials: true}));
+app.use(morgan("dev"));
+app.use(express.json());
+app.use(cookieParser());
+app.use(express.urlencoded({extended: false}));
+app.use("/api", authRoutes);
+app.use("/api", productsRoutes);
+app.use("/api", categoriesRoutes);
+app.use("/api", purchaseDetailsRoutes);
 
-app.use(express.json())
+
+const server = app.listen(3000, () =>
+  console.log(`
+🚀 Server ready at: http://localhost:3000
+⭐️ See sample requests: http://pris.ly/e/js/rest-express#3-using-the-rest-api`),
+)
+/* 
+
 
 app.post(`/signup`, async (req, res) => {
   const { name, email, posts } = req.body
@@ -149,8 +170,4 @@ app.get('/feed', async (req, res) => {
   res.json(posts)
 })
 
-const server = app.listen(3000, () =>
-  console.log(`
-🚀 Server ready at: http://localhost:3000
-⭐️ See sample requests: http://pris.ly/e/js/rest-express#3-using-the-rest-api`),
-)
+*/
