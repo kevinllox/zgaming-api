@@ -1,14 +1,13 @@
 import { Router } from "express";
-
+import { PrismaClient } from '@prisma/client'
+const prisma = new PrismaClient()
 const router = Router();
 
-router.get("/categories", (req, res) => {
-  return res.status(200).json({
-    categories: [
-      { id: 1, name: "Zona Computo" },
-      { id: 2, name: "Zona Red" },
-    ],
-  });
-});
+
+//solo para ver la lista de categorias
+router.get('/categorias',async(req,res)=>{
+  const categories= await prisma.categoria.findMany()
+  res.json(categories)
+})
 
 export default router;
