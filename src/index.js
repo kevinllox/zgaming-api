@@ -9,7 +9,15 @@ import purchaseDetailsRoutes from "./router/purchaseDetails.router.js";
 
 const app = express();
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
-app.use(morgan("dev"));
+
+
+const env = process.env.NODE_ENV || 'development';
+if (env === 'development') {
+  app.use(morgan('dev'));
+} else {
+  app.use(morgan('combined'));
+}
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
@@ -18,7 +26,7 @@ app.use("/api", productsRoutes);
 app.use("/api", categoriesRoutes);
 app.use("/api", purchaseDetailsRoutes);
 
-const server = app.listen(3000, () =>
+const server = app.listen(process.env.PORT || 3000, () =>
   console.log(`
 🚀 Server ready at: http://localhost:3000`)
 );
