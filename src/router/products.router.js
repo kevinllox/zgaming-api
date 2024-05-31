@@ -8,26 +8,27 @@ import {
   getProducts,
   updateProductById,
 } from "../controllers/products.controller.js";
+import { authRequired } from "../middlewares/validateToken.js";
 
 const router = Router();
 
 //Get all products
-router.get("/products", getProducts);
+router.get("/products", authRequired, getProducts);
 //Get product by Id
-router.get("/products/:id", getProductById)
+router.get("/products/:id", authRequired, getProductById);
 //Get products by category
-router.get("/products/:idCategoria", getProductByCategory);
+router.get("/products/:idCategoria", authRequired, getProductByCategory);
 
 //Add a product to DB
-router.post("/add-product", addProduct);
+router.post("/add-product", authRequired, addProduct);
 
 //Update a product by id
-router.put("/product/:idProducto", updateProductById);
+router.put("/product/:idProducto", authRequired, updateProductById);
 
 //get all favorites products
-router.get("/favorites", getFavorites);
+router.get("/favorites", authRequired, getFavorites);
 
 //Delete a product by Id
-router.delete("/product/:idProducto", deleteProduct);
+router.delete("/product/:idProducto", authRequired, deleteProduct);
 
 export default router;

@@ -50,8 +50,58 @@ const register = async (req, res) => {
     res.status(201).json({ userNewResponse, token });
   } catch (error) {
     console.error("Error creating user:", error);
-    res.status(500).json({ message: "The user cannot be created", error });
+    res
+      .status(500)
+      .json({ message: "The user cannot be created", error: error.message });
   }
 };
 
-export { register };
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const userFound = await prisma.usuario.findFirst({
+      where: {
+        correo: email,
+      },
+    });
+    if (!userFound) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(password, userFound.contrasenia);
+
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credential" });
+    }
+
+    const token = await createAccessToken({ id: userFound.idUsuario });
+    res.cookie("token", token);
+    const userNewFound = {
+      ...userFound,
+      numeroTelefono: userFound.numeroTelefono
+        ? userFound.numeroTelefono.toString()
+        : null,
+    };
+    res.status(200).json(userNewFound);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const logout = (req, res) => {
+  res.cookie("token", "", { expires: new Date(0) });
+  return res.sendStatus(200);
+};
+
+const verify = async (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  jwt.verify(token, process.env.TOKEN_SECRET, async (error, user) => {
+    if (error) return res.status(401).json({ message: "Unauthorized" });
+    const userFound = await prisma.usuario.findUnique(user);
+    if (!userFound) return res.status(401).json({ message: "Unauthorized" });
+    return res.json(userFound);
+  });
+};
+
+export { register, login, logout, verify };
