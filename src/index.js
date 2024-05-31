@@ -8,9 +8,6 @@ import productsRoutes from "./router/products.router.js";
 import purchaseDetailsRoutes from "./router/purchaseDetails.router.js";
 
 const app = express();
-app.use(cors({ origin:process.env.BASE_URL, credentials: true }));
-
-
 const env = process.env.NODE_ENV || 'development';
 if (env === 'development') {
   app.use(morgan('dev'));
