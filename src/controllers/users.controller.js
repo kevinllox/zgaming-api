@@ -93,6 +93,29 @@ const logout = (req, res) => {
   return res.sendStatus(200);
 };
 
+const profile = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const userFound = await prisma.usuario.findFirst({
+      where: {
+        idUsuario: parseInt(id),
+      },
+    });
+    if (!userFound) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const userNewFound = {
+      ...userFound,
+      numeroTelefono: userFound.numeroTelefono
+        ? userFound.numeroTelefono.toString()
+        : null,
+    };
+    res.status(200).json(userNewFound);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const verify = async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ message: "Unauthorized" });
@@ -104,4 +127,4 @@ const verify = async (req, res) => {
   });
 };
 
-export { register, login, logout, verify };
+export { register, login, logout, verify, profile };
