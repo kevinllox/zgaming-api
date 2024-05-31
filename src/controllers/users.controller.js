@@ -47,7 +47,7 @@ const register = async (req, res) => {
         ? newUser.numeroTelefono.toString()
         : null,
     };
-    res.status(201).json(userNewResponse);
+    res.status(201).json({ userNewResponse, token });
   } catch (error) {
     console.error("Error creating user:", error);
     res.status(500).json({ message: "The user cannot be created", error });
