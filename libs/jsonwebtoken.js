@@ -1,4 +1,4 @@
-const jsonwebtoken = require("jsonwebtoken");
+import jsonwebtoken from "jsonwebtoken";
 const privateKey = process.env.TOKEN_SECRET;
 
 const createAccessToken = (payload) => {
@@ -14,8 +14,6 @@ const createAccessToken = (payload) => {
         resolve(token);
       }
     );
-  });
-};
+  })};
 
-
-export default createAccessToken;
+export { createAccessToken };
