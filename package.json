@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon src/index.js",
-    "seed": "node seed.js"
+    "seed": "node seed.js",
+    "vercel-build":"echo hello"
   },
   "dependencies": {
     "@prisma/client": "5.14.0",
