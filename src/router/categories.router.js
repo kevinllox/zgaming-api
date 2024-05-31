@@ -1,13 +1,8 @@
 import { Router } from "express";
-import { PrismaClient } from '@prisma/client'
-const prisma = new PrismaClient()
+import { getCategories } from "../controllers/categories.controller";
 const router = Router();
 
-
 //solo para ver la lista de categorias
-router.get('/categorias',async(req,res)=>{
-  const categories= await prisma.categoria.findMany()
-  res.json(categories)
-})
+router.get("/categorias", getCategories);
 
 export default router;
