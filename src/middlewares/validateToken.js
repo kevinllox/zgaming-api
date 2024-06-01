@@ -2,7 +2,9 @@ import jsonwebtoken from "jsonwebtoken";
 
 const authRequired = (req, res, next) => {
   const authHeader = req.headers["authorization"];
+  
   const token = authHeader && authHeader.split(" ")[1];
+  console.log(token);
   if (!token) {
     return res.status(401).json({ message: "No token, authorization denied" });
   }

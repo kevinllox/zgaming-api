@@ -17,7 +17,7 @@ router.get("/products", authRequired, getProducts);
 //Get product by Id
 router.get("/products/:id", authRequired, getProductById);
 //Get products by category
-router.get("/products/:idCategoria", authRequired, getProductByCategory);
+router.get("/products/category/:idCategoria", authRequired, getProductByCategory);
 
 //Add a product to DB
 router.post("/add-product", authRequired, addProduct);
