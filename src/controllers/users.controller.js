@@ -39,13 +39,12 @@ const register = async (req, res) => {
 
     console.log("User created successfully:", newUser);
     const token = await createAccessToken({ id: newUser.idUsuario });
-    res.cookie("token", token);
-    console.log("Token:", token);
     const userNewResponse = {
       ...newUser,
       numeroTelefono: newUser.numeroTelefono
         ? newUser.numeroTelefono.toString()
         : null,
+      token,
     };
     res.status(201).json({ userNewResponse, token });
   } catch (error) {
@@ -75,12 +74,12 @@ const login = async (req, res) => {
     }
 
     const token = await createAccessToken({ id: userFound.idUsuario });
-    res.cookie("token", token);
     const userNewFound = {
       ...userFound,
       numeroTelefono: userFound.numeroTelefono
         ? userFound.numeroTelefono.toString()
         : null,
+        token
     };
     res.status(200).json(userNewFound);
   } catch (error) {
@@ -88,10 +87,10 @@ const login = async (req, res) => {
   }
 };
 
-const logout = (req, res) => {
+/* const logout = (req, res) => {
   res.cookie("token", "", { expires: new Date(0) });
   return res.sendStatus(200);
-};
+}; */
 
 const profile = async (req, res) => {
   const { id } = req.params;
@@ -127,4 +126,4 @@ const verify = async (req, res) => {
   });
 };
 
-export { register, login, logout, verify, profile };
+export { register, login, verify, profile };
