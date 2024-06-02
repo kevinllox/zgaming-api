@@ -26,30 +26,9 @@ router.post("/add-product", authRequired, addProduct);
 router.put("/product/:idProducto", authRequired, updateProductById);
 
 //get all favorites products
-router.get("/favorites", authRequired, getFavorites);
-
+/* router.get("/favorites", authRequired, getFavorites);
+ */
 //metodo para eliminar un producto.
-router.delete('/product/:idProducto',async(req,res)=>{
-    const {idProducto}= req.params
-  
-    try{
-      const findProduct=await prisma.producto.findUnique({
-        where:{
-          idProducto: parseInt(idProducto)
-        }
-    })
-    if(!findProduct){
-      return res.status(404).json({error:"product not found"})
-    }
-    const product=await prisma.producto.delete({
-      where:{
-        idProducto:parseInt(idProducto)
-      }
-    })
-    res.status(200).json(product)
-    }catch(error){
-      res.status(500).json({error:"Error when deleting the product"})
-    }
-  })
+router.delete('/product/:idProducto',deleteProduct)
   
 export default router;

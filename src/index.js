@@ -6,6 +6,7 @@ import authRoutes from "./router/auth.router.js";
 import categoriesRoutes from "./router/categories.router.js";
 import productsRoutes from "./router/products.router.js";
 import purchaseDetailsRoutes from "./router/purchaseDetails.router.js";
+import favoritesRoutes from "./router/favorites.router.js";
 
 const app = express();
 const env = process.env.NODE_ENV || 'development';
@@ -22,6 +23,7 @@ app.use("/api", authRoutes);
 app.use("/api", productsRoutes);
 app.use("/api", categoriesRoutes);
 app.use("/api", purchaseDetailsRoutes);
+app.use("/api", favoritesRoutes);
 
 const server = app.listen(process.env.PORT || 3000, () =>
   console.log(`
