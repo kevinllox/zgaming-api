@@ -50,6 +50,7 @@ const addProduct = async (req, res) => {
     stock,
     imagenProducto,
     isFavorito,
+    isAddedInCart,
     idCategoria,
   } = req.body;
   try {
@@ -69,6 +70,7 @@ const addProduct = async (req, res) => {
         stock,
         imagenProducto,
         isFavorito,
+        isAddedInCart,
         idCategoria,
       },
     });
