@@ -8,70 +8,80 @@ datasource db {
 }
 
 model Roles {
-  idRol         Int               @id @default(autoincrement())
-  nombreRol     String            @db.VarChar(15)
-  descripcionRol String            @db.VarChar(50)
+  idRol           Int               @id @default(autoincrement())
+  nombreRol       String            @db.VarChar(15)
+  descripcionRol  String            @db.VarChar(50)
   RolesOpcionMenu RolesOpcionMenu[]
 }
 
 model OpcionesMenu {
-  idOpcion         Int               @id @default(autoincrement())
+  idOpcion          Int               @id @default(autoincrement())
   descripcionOpcion String            @db.VarChar(500)
-  RolesOpcionMenu RolesOpcionMenu[]
+  RolesOpcionMenu   RolesOpcionMenu[]
 }
 
 model Categoria {
-  idCategoria     Int               @id @default(autoincrement())
-  nombreCategoria String            @db.VarChar(500)
+  idCategoria     Int        @id @default(autoincrement())
+  nombreCategoria String     @db.VarChar(500)
   Producto        Producto[]
 }
 
 model Usuario {
-  idUsuario        Int       @id @default(autoincrement())
-  contrasenia      String    @db.VarChar(255)
-  correo           String    @db.VarChar(255)
-  nombre           String    @db.VarChar(255)
-  numeroTelefono   BigInt?
-  nombreUsuario    String    @db.VarChar(255)
-  activo           Boolean?
-  idRol            Int
+  idUsuario       Int               @id @default(autoincrement())
+  contrasenia     String            @db.VarChar(255)
+  correo          String            @db.VarChar(255)
+  nombre          String            @db.VarChar(255)
+  numeroTelefono  BigInt?
+  nombreUsuario   String            @db.VarChar(255)
+  activo          Boolean?
+  idRol           Int
+  usuarioProducto usuarioProducto[]
 }
 
 model RolesOpcionMenu {
-  idRolMenu Int   @id @default(autoincrement())
-  idOpcion  Int
-  idRol     Int
+  idRolMenu    Int          @id @default(autoincrement())
+  idOpcion     Int
+  idRol        Int
   OpcionesMenu OpcionesMenu @relation(fields: [idOpcion], references: [idOpcion])
-  Roles         Roles        @relation(fields: [idRol], references: [idRol])
+  Roles        Roles        @relation(fields: [idRol], references: [idRol])
 }
 
 model Producto {
-  idProducto       Int               @id @default(autoincrement())
-  nombreProducto   String            @db.VarChar(150)
-  descripcion      String?           @db.VarChar(500)
-  precio           Decimal           @db.Decimal(10, 5)
-  stock            Int?
-  imagenProducto   String?           @db.VarChar(100)
-  isFavorito       Boolean?
-  idCategoria      Int
-  Categoria        Categoria         @relation(fields: [idCategoria], references: [idCategoria])
-  detalleCompra    detalleCompra[]
+  idProducto      Int               @id @default(autoincrement())
+  nombreProducto  String            @db.VarChar(150)
+  descripcion     String?           @db.VarChar(500)
+  precio          Decimal           @db.Decimal(10, 5)
+  stock           Int?
+  imagenProducto  String?           @db.VarChar(100)
+  isFavorito      Boolean?
+  isAddedInCart   Boolean?
+  idCategoria     Int
+  Categoria       Categoria         @relation(fields: [idCategoria], references: [idCategoria])
+  detalleCompra   detalleCompra[]
+  usuarioProducto usuarioProducto[]
 }
 
 model Compra {
-  idCompra         Int               @id @default(autoincrement())
-  cantidadCompra   Int?
-  idUsuario        Int
-  detalleCompra    detalleCompra[]
+  idCompra       Int             @id @default(autoincrement())
+  cantidadCompra Int?
+  idUsuario      Int
+  detalleCompra  detalleCompra[]
 }
 
 model detalleCompra {
-  idDetalle        Int               @id @default(autoincrement())
-  fechaCompra      DateTime?
-  numeroOrden      Int?
-  idProducto       Int?
-  idCompra         Int?
-  Producto         Producto?         @relation(fields: [idProducto], references: [idProducto])
-  Compra           Compra?           @relation(fields: [idCompra], references: [idCompra])
+  idDetalle   Int       @id @default(autoincrement())
+  fechaCompra DateTime?
+  numeroOrden Int?
+  idProducto  Int?
+  idCompra    Int?
+  Producto    Producto? @relation(fields: [idProducto], references: [idProducto])
+  Compra      Compra?   @relation(fields: [idCompra], references: [idCompra])
 }
 
+model usuarioProducto {
+  idUsuarioProducto Int       @id @default(autoincrement())
+  idUsuario         Int?
+  idProducto        Int?
+  Usuario           Usuario?  @relation(fields: [idUsuario], references: [idUsuario])
+  Producto          Producto? @relation(fields: [idProducto], references: [idProducto])
+}

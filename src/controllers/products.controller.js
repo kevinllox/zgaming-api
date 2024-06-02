@@ -87,6 +87,7 @@ const updateProductById = async (req, res) => {
     stock,
     imagenProducto,
     isFavorito,
+    isAddedInCart,
     idCategoria,
   } = req.body;
   try {
@@ -108,6 +109,7 @@ const updateProductById = async (req, res) => {
         imagenProducto,
         isFavorito,
         idCategoria,
+        isAddedInCart
       },
     });
     res.status(201).json(updateProduct);
