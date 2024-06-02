@@ -33,12 +33,23 @@ const addToFavorites = async (req, res) => {
 const getFavoritesbyUser = async (req, res) => {
   const { idUsuario } = req.params;
   try {
+    const isUserValid = await prisma.usuario.findFirst({
+      where: {
+        idUsuario: parseInt(idUsuario),
+      },
+    });
+
+    if (!isUserValid) {
+      return res
+        .status(404)
+        .json({ error: `This user id: ${idUsuario} doesn't exist` });
+    }
     const favoritesProducts = await prisma.usuarioProducto.findMany({
       include: {
         Producto: true,
       },
       where: {
-        idUsuario: idUsuario,
+        idUsuario: parseInt(idUsuario),
       },
     });
     res.status(200).json(favoritesProducts);

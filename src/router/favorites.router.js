@@ -10,7 +10,7 @@ const router = Router();
 
 //get favorites by user
 
-router.get("/favorites/:id", authRequired, getFavoritesbyUser);
+router.get("/favorites/:idUsuario", authRequired, getFavoritesbyUser);
 //Add favorites by userId
 router.post("/favorites", authRequired, addToFavorites);
 router.delete("/favorite/:id", authRequired, removeFromFavorites);
