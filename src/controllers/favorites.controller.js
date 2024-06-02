@@ -31,7 +31,7 @@ const addToFavorites = async (req, res) => {
 };
 
 const getFavoritesbyUser = async (req, res) => {
-  const { idUsuario } = req.body;
+  const { idUsuario } = req.params;
   try {
     const favoritesProducts = await prisma.usuarioProducto.findMany({
       include: {
@@ -50,12 +50,12 @@ const getFavoritesbyUser = async (req, res) => {
 };
 
 const removeFromFavorites = async (req, res) => {
-  const { idUsuarioProducto } = req.body;
+  const { id } = req.params;
 
   try {
     const deletedItemFromFavorites = await prisma.usuarioProducto.delete({
       where: {
-        idUsuarioProducto: idUsuarioProducto,
+        idUsuarioProducto: parseInt(id),
       },
     });
 

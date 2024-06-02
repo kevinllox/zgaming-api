@@ -3,7 +3,7 @@ import {
   login,
   register,
   profile,
-} from "../controllers/users.controller.js";
+} from "../controllers/auth.controller.js";
 import { authRequired } from "../middlewares/validateToken.js";
 
 const router = Router();

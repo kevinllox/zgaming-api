@@ -48,11 +48,11 @@ model RolesOpcionMenu {
 
 model Producto {
   idProducto      Int               @id @default(autoincrement())
-  nombreProducto  String            @db.VarChar(150)
+  nombreProducto  String            @db.VarChar(500)
   descripcion     String?           @db.VarChar(500)
   precio          Decimal           @db.Decimal(10, 5)
   stock           Int?
-  imagenProducto  String?           @db.VarChar(100)
+  imagenProducto  String?           @db.VarChar(500)
   isFavorito      Boolean?
   isAddedInCart   Boolean?
   idCategoria     Int
