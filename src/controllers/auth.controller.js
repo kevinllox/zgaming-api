@@ -137,7 +137,8 @@ const getAllProfiles = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const { userId } = req.params;
-  const { username, email, password, name, phoneNumber, idRol, isActive } = req.body;
+  const { username, email, password, name, phoneNumber, idRol, isActive } =
+    req.body;
   let passwordHash;
   const updateData = {};
 
@@ -172,7 +173,10 @@ const updateProfile = async (req, res) => {
 
     // Check if the password needs to be updated
     if (password) {
-      const passwordMatch = await bcrypt.compare(password, currentUser.contrasenia);
+      const passwordMatch = await bcrypt.compare(
+        password,
+        currentUser.contrasenia
+      );
       if (!passwordMatch) {
         passwordHash = await bcrypt.hash(password, 10);
         updateData.contrasenia = passwordHash;
@@ -194,8 +198,7 @@ const updateProfile = async (req, res) => {
       return res.status(200).json({ message: "No fields have changed" });
     }
 
-
-    console.log(updateData)
+    console.log(updateData);
     // Update the user with only the changed fields
     const updatedUser = await prisma.usuario.update({
       where: {
@@ -207,16 +210,46 @@ const updateProfile = async (req, res) => {
     // Convert BigInt fields to string for JSON serialization
     const serializedUser = {
       ...updatedUser,
-      numeroTelefono: updatedUser.numeroTelefono ? updatedUser.numeroTelefono.toString() : null,
+      numeroTelefono: updatedUser.numeroTelefono
+        ? updatedUser.numeroTelefono.toString()
+        : null,
     };
 
     res.status(201).json(serializedUser);
   } catch (error) {
-    res.status(500).json({ message: "Error while updating the user", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error while updating the user", error: error.message });
   }
 };
 
+const getProfileByRol = async (req, res) => {
+  const { idRol } = req.params;
+  try {
+    const isRolValid = await prisma.roles.findFirst({
+      where: {
+        idRol: idRol,
+      },
+    });
 
+    if (!isRolValid) {
+      res
+        .status(404)
+        .json({ message: "Id rol is not valid", error: error.message });
+    }
+    const profilesByRol = await prisma.usuario.findMany({
+      where: {
+        idRol: parseInt(idRol),
+      },
+    });
+    res.status(200).json(profilesByRol);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error when getting users by role",
+      error: error.message,
+    });
+  }
+};
 const verify = async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ message: "Unauthorized" });
@@ -228,4 +261,12 @@ const verify = async (req, res) => {
   });
 };
 
-export { register, login, verify, profile, updateProfile, getAllProfiles };
+export {
+  register,
+  login,
+  verify,
+  profile,
+  updateProfile,
+  getAllProfiles,
+  getProfileByRol,
+};

@@ -5,6 +5,7 @@ import {
   profile,
   getAllProfiles,
   updateProfile,
+  getProfileByRol,
 } from "../controllers/auth.controller.js";
 import { authRequired } from "../middlewares/validateToken.js";
 
@@ -15,6 +16,7 @@ router.get("/profiles", authRequired, getAllProfiles);
 router.put("/profile/:userId", authRequired, updateProfile);
 router.post("/login", login);
 router.get("/profile/:id", authRequired, profile);
+router.get("/profiles/rol/:idRol", authRequired, getProfileByRol)
 /* 
 router.post("/logout", logout); */
 /* router.get("/verify", verify); */
