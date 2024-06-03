@@ -44,6 +44,7 @@ const getFavoritesbyUser = async (req, res) => {
         .status(404)
         .json({ error: `This user id: ${idUsuario} doesn't exist` });
     }
+    
     const favoritesProducts = await prisma.usuarioProducto.findMany({
       include: {
         Producto: true,
@@ -52,13 +53,21 @@ const getFavoritesbyUser = async (req, res) => {
         idUsuario: parseInt(idUsuario),
       },
     });
-    res.status(200).json(favoritesProducts);
+
+    const formattedFavorites = favoritesProducts.map(favorite => ({
+      ...favorite,
+      producto: favorite.Producto,
+      Producto: undefined,
+    }));
+
+    res.status(200).json(formattedFavorites);
   } catch (error) {
     res
       .status(500)
       .json({ message: "Could not get favorites", error: error.message });
   }
 };
+
 
 const removeFromFavorites = async (req, res) => {
   const { id } = req.params;
