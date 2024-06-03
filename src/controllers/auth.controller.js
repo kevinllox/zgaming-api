@@ -228,7 +228,7 @@ const getProfileByRol = async (req, res) => {
   try {
     const isRolValid = await prisma.roles.findFirst({
       where: {
-        idRol: idRol,
+        idRol: parseInt(idRol),
       },
     });
 
