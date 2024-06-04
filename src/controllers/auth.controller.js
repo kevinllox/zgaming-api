@@ -226,23 +226,31 @@ const updateProfile = async (req, res) => {
 const getProfileByRol = async (req, res) => {
   const { idRol } = req.params;
   try {
-    const isRolValid = await prisma.roles.findFirst({
+    const isRolValid = await prisma.roles.findUnique({
       where: {
         idRol: parseInt(idRol),
       },
     });
 
+    console.log(isRolValid)
+
     if (!isRolValid) {
-      res
-        .status(404)
-        .json({ message: "Id rol is not valid", error: error.message });
+      return res.status(404).json({ message: "Id rol is not valid"});
     }
+    
     const profilesByRol = await prisma.usuario.findMany({
       where: {
         idRol: parseInt(idRol),
       },
     });
-    res.status(200).json(profilesByRol);
+    console.log(profilesByRol)
+    const usersNewResponse = profilesByRol.map((profile) => ({
+      ...profile,
+      numeroTelefono: profile.numeroTelefono
+        ? profile.numeroTelefono.toString()
+        : null,
+    }));
+    res.status(201).json(usersNewResponse);
   } catch (error) {
     res.status(500).json({
       message: "Error when getting users by role",
