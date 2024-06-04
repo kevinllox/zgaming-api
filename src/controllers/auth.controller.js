@@ -144,7 +144,7 @@ const updateProfile = async (req, res) => {
 
   try {
     // Fetch current user data
-    const currentUser = await prisma.usuario.findUnique({
+    const currentUser = await prisma.usuario.findFirst({
       where: {
         idUsuario: parseInt(userId), // Assuming 'idUsuario' is the primary key field in your database
       },
@@ -157,8 +157,8 @@ const updateProfile = async (req, res) => {
     }
 
     // Check if the role needs to be updated and if it exists
-    if (idRol && currentUser.idRol !== parseInt(idRol)) {
-      const roleFound = await prisma.rol.findUnique({
+    if ((idRol === 0) || (idRol && currentUser.idRol !== parseInt(idRol))) {
+      const roleFound = await prisma.rol.findFirst({
         where: {
           idRol: parseInt(idRol),
         },
@@ -235,9 +235,9 @@ const getProfileByRol = async (req, res) => {
     console.log(isRolValid)
 
     if (!isRolValid) {
-      return res.status(404).json({ message: "Id rol is not valid"});
+      return res.status(404).json({ message: "Id rol is not valid" });
     }
-    
+
     const profilesByRol = await prisma.usuario.findMany({
       where: {
         idRol: parseInt(idRol),
