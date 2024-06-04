@@ -158,7 +158,7 @@ const updateProfile = async (req, res) => {
 
     // Check if the role needs to be updated and if it exists
     if ((idRol === 0) || (idRol && currentUser.idRol !== parseInt(idRol))) {
-      const roleFound = await prisma.rol.findFirst({
+      const roleFound = await prisma.roles.findFirst({
         where: {
           idRol: parseInt(idRol),
         },
