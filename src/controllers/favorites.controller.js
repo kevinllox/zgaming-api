@@ -44,21 +44,27 @@ const getFavoritesbyUser = async (req, res) => {
         .status(404)
         .json({ error: `This user id: ${idUsuario} doesn't exist` });
     }
-    
+
     const favoritesProducts = await prisma.usuarioProducto.findMany({
       include: {
-        Producto: true,
+        Producto: {
+          where: {
+            isFavorito: true,
+          },
+        },
       },
       where: {
         idUsuario: parseInt(idUsuario),
       },
     });
 
-    const formattedFavorites = favoritesProducts.map(favorite => ({
-      ...favorite,
-      producto: favorite.Producto,
-      Producto: undefined,
-    }));
+    const formattedFavorites = favoritesProducts
+      .map((favorite) => ({
+        ...favorite,
+        producto: favorite.Producto,
+        Producto: undefined,
+      }))
+      .filter((favorite) => favorite.producto !== null);
 
     res.status(200).json(formattedFavorites);
   } catch (error) {
@@ -67,7 +73,6 @@ const getFavoritesbyUser = async (req, res) => {
       .json({ message: "Could not get favorites", error: error.message });
   }
 };
-
 
 const removeFromFavorites = async (req, res) => {
   const { id } = req.params;
