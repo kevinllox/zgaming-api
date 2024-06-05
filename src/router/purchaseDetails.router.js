@@ -1,14 +1,18 @@
 import { Router } from "express";
+import { authRequired } from "../middlewares/validateToken.js";
+import {
+  addToCart,
+  getCartItems,
+  removeItemFromCart,
+} from "../controllers/purchaseDetails.controller.js";
 
 const router = Router();
 
-router.get("/purchase-details", (req, res) => {
-  return res.status(200).json([
-    { id: 1, name: "Order 1" },
-    { id: 2, name: "Order 2" },
-  ]);
-});
-router.get("/purchase-details/:id", (req, res) => {
-  return res.status(200).json([{ id: 1, total: 1000 }]);
-});
+//get favorites by user
+
+router.get("/cart-items/:idUsuario", authRequired, getCartItems);
+//Add favorites by userId
+router.post("/cart-item", authRequired, addToCart);
+router.delete("/cart-item/:id", authRequired, removeItemFromCart);
+
 export default router;
